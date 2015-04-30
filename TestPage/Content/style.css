@@ -1,4 +1,8 @@
-﻿label{
+﻿input:focus, .btn:focus{
+    outline:none;
+}
+
+label{
     font-weight:normal !important;
 }
 ul{
