@@ -1,0 +1,31 @@
+﻿label{
+    font-weight:normal !important;
+}
+ul{
+    padding:0;
+    margin:0;
+}
+.col-xs-12 ul{
+    padding-left: 20px;
+    margin:0;
+}
+
+ul li{
+    list-style:none;    
+}
+
+.modal.modal-wide .modal-dialog {
+    width: 85%;
+    text-align: justify;
+}
+.modal.modal-wide .modal-dialog h4 {
+    text-align:center;
+}
+.modal-wide .modal-body {
+    overflow-y: auto;
+}
+
+.btn-amarelo{
+    background-color:#eb0; 
+    color:white;
+}
