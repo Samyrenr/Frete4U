@@ -7,12 +7,12 @@ namespace TestPage.Models
     {
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Endereço de Origem")]
+        [Display(Name = "Endereço de Origem:")]
         public string EndOrigem { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Endereço de Destino")]
+        [Display(Name = "Endereço de Destino:")]
         public string EndDestino { get; set; }
     }
 }
