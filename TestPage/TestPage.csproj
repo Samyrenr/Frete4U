@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +45,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -165,9 +169,54 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Contato_Vinculo.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabricante_Veiculo.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Frete4UModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Frete4UModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Frete4UModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Frete4UModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Frete4UModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\FreteModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Pessoa.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pessoa_Veiculo_Vinculo.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Solicitacao.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_Combustivel.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_Contato.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_Pessoa.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_Veiculo.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Veiculo.cs">
+      <DependentUpon>Frete4UModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -183,6 +232,23 @@
     <Content Include="Images\logo_frete4U_top.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\Frete4UModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Frete4UModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Frete4UModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Frete4UModel.edmx</DependentUpon>
+      <LastGenOutput>Frete4UModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Frete4UModel.edmx.diagram">
+      <DependentUpon>Frete4UModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Frete4UModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Frete4UModel.edmx</DependentUpon>
+      <LastGenOutput>Frete4UModel.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -244,6 +310,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -272,6 +341,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
