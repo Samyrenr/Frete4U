@@ -1,8 +1,8 @@
-﻿input:focus, .btn:focus, form-control:focus{
+﻿.semborda:focus{
     border-color: #cccccc !important;
     outline: 0 !important;
     -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .nowidth{
@@ -32,7 +32,7 @@ ul li{
 }
 
 .modal.modal-wide .modal-dialog {
-    width: 85%;
+    width: 95%;
     text-align: justify;
 }
 .modal.modal-wide .modal-dialog h4 {

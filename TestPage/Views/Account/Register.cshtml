@@ -1,229 +1,239 @@
 ﻿@model TestPage.Models.RegisterViewModel
-@{
-    ViewBag.Title = "Registrar";
-}
-
-<h2>@ViewBag.Title</h2>
-
-@using (Html.BeginForm("Registrar", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Criar uma nova conta.</h4>
-    <hr />
-    <h3>Você é um cliente? Ou você tem um veículo e quer se cadastrar para realizar entregas?</h3>
-    <div class="radio-inline">
-        <span class="input-group-addon">
-            <label>@Html.RadioButtonFor(m => m.TipoCadastro, 1)Sou um cliente</label>
-        </span>
-        <span class="input-group-addon">
-            <label>@Html.RadioButtonFor(m => m.TipoCadastro, 2)Realizo fretes ou entregas</label>
-        </span>
-    </div>
-
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @title = "Informe seu endereço de email. Ele será utilizado para acessar sua conta." })
+<div class="container">
+    @{
+        ViewBag.Title = "Registrar";
+    }
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("Registrar", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Criar uma nova conta.</h4>
+        <hr />
+        <h3>Você é um cliente? Ou você tem um veículo e quer se cadastrar para realizar entregas?</h3>
+        <div class="form-group">
+            <label class="col-md-2 control-label">*Eu</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UF, new SelectList(new List<Object>{
+                                                                                  new { value = "", text = "Selecione..."},
+                                                                                  new { value = "1", text = "Preciso de frete"},
+                                                                                  new { value = "2", text = "Faço frete"}                                                                                  
+                                                                                  }, "value", "text", 0), new { id = "TipoLogin", @class = "form-control", onchange = "carregaFormulario();" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Senha, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Senha, new { @class = "form-control", @title = "Escolha uma senha com, no mínimo, 6 caracteres." })
+        <div class="form-group" hidden id="Teste">
+            <label class="col-md-2 control-label" for="Teste">*Sou</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UF, new SelectList(new List<Object>{
+                                                                                      new { value = "", text = "Selecione..."},
+                                                                                      new { value = "PF", text = "Pessoa física"},
+                                                                                      new { value = "PJ", text = "Pessoa jurídica"}
+                                                                                      }, "value", "text", 0), new { @id = "TipoPessoa", @class = "form-control", onchange = "carregaFormulario();" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmarSenha, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmarSenha, new { @class = "form-control", @title = "Insira novamente a senha informada no campo anterior." })
+        @Html.ValidationSummary("", new { @class = "text-danger" })        
+        <div class="form-group" hidden id="divCPF">
+            @Html.LabelFor(m => m.CPF, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", @title = "Informe seu CPF, apenas os números." })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.NomePessoa, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.NomePessoa, new { @class = "form-control", @title = "Informe seu nome completo." })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.NomeEmpresa, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.NomeEmpresa, new { @class = "form-control", @title = "Caso você tenha ou trabalhe em uma empresa de transportes, informe aqui o nome dela." })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.CPF, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", @title = "Informe seu CPF, apenas os números." })
-        </div>
-    </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divCNPJ">
         @Html.LabelFor(m => m.CNPJ, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.CNPJ, new { @class = "form-control", @title = "Informe seu CNPJ, apenas os números." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divNome">
+        @Html.LabelFor(m => m.NomePessoa, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.NomePessoa, new { @class = "form-control", @title = "Informe seu nome completo." })
+        </div>
+    </div>
+    <div class="form-group" hidden id="divNomeEmpresa">
+        @Html.LabelFor(m => m.NomeEmpresa, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.NomeEmpresa, new { @class = "form-control", @title = "Caso você tenha ou trabalhe em uma empresa de transportes, informe aqui o nome dela." })
+        </div>
+    </div>
+    <div class="form-group" hidden id="divEmail">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @title = "Informe seu endereço de email. Ele será utilizado para acessar sua conta." })
+        </div>
+    </div>  
+    <div class="form-group" hidden id="divTelefone">
         @Html.LabelFor(m => m.Telefone1, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Telefone1, new { @class = "form-control", @title = "Informe seu telefone principal. Este número será visível apenas dentro de suas negociações." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divCelular">
         @Html.LabelFor(m => m.Telefone2, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Telefone2, new { @class = "form-control", @title = "Caso queira incluir um número de telefone adicional, informe aqui." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divCEP">
         @Html.LabelFor(m => m.CEP, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.CEP, new { @class = "form-control", @title = "Insira o CEP de sua rua. O resto do endereço será completado automaticamente." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divRua">
         @Html.LabelFor(m => m.Rua, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Rua, new { @class = "form-control", @title = "Seu logradouro." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divNumero">
         @Html.LabelFor(m => m.NumeroEnd, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.NumeroEnd, new { @class = "form-control", @title = "Informe o número de sua residência ou empresa." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divComplemento">
         @Html.LabelFor(m => m.Complemento, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Complemento, new { @class = "form-control", @title = "Caso necessário, informe aqui o complemento de seu endereço (bloco, apartamento, etc)." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divBairro">
         @Html.LabelFor(m => m.Bairro, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Bairro, new { @class = "form-control", @title = "Nome do seu bairro." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divCidade">
         @Html.LabelFor(m => m.Cidade, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Cidade, new { @class = "form-control", @title = "Nome do seu município." })
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" hidden id="divUF">
         @Html.LabelFor(m => m.UF, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.DropDownListFor(m => m.UF, new SelectList(new List<Object>{
-                                                                              new { value = "AC", text = "Acre"},
-                                                                              new { value = "AL", text = "Alagoas"},
-                                                                              new { value = "AP", text = "Amapá"},
-                                                                              new { value = "AM", text = "Amazonas"},
-                                                                              new { value = "BA", text = "Bahia"},
-                                                                              new { value = "CE", text = "Ceará"},
-                                                                              new { value = "DF", text = "Distrito Federal"},
-                                                                              new { value = "ES", text = "Espírito Santo"},
-                                                                              new { value = "GO", text = "Goiás"},
-                                                                              new { value = "MA", text = "Maranhão"},
-                                                                              new { value = "MT", text = "Mato Grosso"},
-                                                                              new { value = "MS", text = "Mato Grosso do Sul"},
-                                                                              new { value = "MG", text = "Minas Gerais"},
-                                                                              new { value = "PA", text = "Pará"},
-                                                                              new { value = "PB", text = "Paraíba"},
-                                                                              new { value = "PR", text = "Paraná"},
-                                                                              new { value = "PE", text = "Pernambuco"},
-                                                                              new { value = "PI", text = "Piauí"},
-                                                                              new { value = "RJ", text = "Rio de Janeiro"},
-                                                                              new { value = "RN", text = "Rio Grande do Norte"},
-                                                                              new { value = "RS", text = "Rio Grande do Sul"},
-                                                                              new { value = "RO", text = "Rondônia"},
-                                                                              new { value = "RR", text = "Roraima"},
-                                                                              new { value = "SC", text = "Santa Catarina"},
-                                                                              new { value = "SP", text = "São Paulo"},
-                                                                              new { value = "SE", text = "Sergipe"},
-                                                                              new { value = "TO", text = "Tocantins"}
-                                                                              }, "value", "text", 2), new { @class = "btn btn-default dropdown-toggle", @title = "Nome de seu Estado." })
+                                                                                      new { value = "", text = "Selecione..."},
+                                                                                      new { value = "AC", text = "Acre"},
+                                                                                      new { value = "AL", text = "Alagoas"},
+                                                                                      new { value = "AP", text = "Amapá"},
+                                                                                      new { value = "AM", text = "Amazonas"},
+                                                                                      new { value = "BA", text = "Bahia"},
+                                                                                      new { value = "CE", text = "Ceará"},
+                                                                                      new { value = "DF", text = "Distrito Federal"},
+                                                                                      new { value = "ES", text = "Espírito Santo"},
+                                                                                      new { value = "GO", text = "Goiás"},
+                                                                                      new { value = "MA", text = "Maranhão"},
+                                                                                      new { value = "MT", text = "Mato Grosso"},
+                                                                                      new { value = "MS", text = "Mato Grosso do Sul"},
+                                                                                      new { value = "MG", text = "Minas Gerais"},
+                                                                                      new { value = "PA", text = "Pará"},
+                                                                                      new { value = "PB", text = "Paraíba"},
+                                                                                      new { value = "PR", text = "Paraná"},
+                                                                                      new { value = "PE", text = "Pernambuco"},
+                                                                                      new { value = "PI", text = "Piauí"},
+                                                                                      new { value = "RJ", text = "Rio de Janeiro"},
+                                                                                      new { value = "RN", text = "Rio Grande do Norte"},
+                                                                                      new { value = "RS", text = "Rio Grande do Sul"},
+                                                                                      new { value = "RO", text = "Rondônia"},
+                                                                                      new { value = "RR", text = "Roraima"},
+                                                                                      new { value = "SC", text = "Santa Catarina"},
+                                                                                      new { value = "SP", text = "São Paulo"},
+                                                                                      new { value = "SE", text = "Sergipe"},
+                                                                                      new { value = "TO", text = "Tocantins"}
+                                                                                      }, "value", "text", 2), new { @class = "btn btn-default dropdown-toggle", @title = "Nome de seu Estado." })
         </div>
     </div>
-
-    // Campos apenas para prestadores de serviço
-    <hr />
-    <div class="form-group">
-        <h3>Quais veículos você possui?</h3>
+    <div class="form-group" hidden id="divSenha">
+        @Html.LabelFor(m => m.Senha, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            <input type="checkbox" class="checkbox-inline">Moto
-            <input type="checkbox" class="checkbox-inline">Caminhonete
-            <input type="checkbox" class="checkbox-inline">Furgão
-            <input type="checkbox" class="checkbox-inline">Reboque
-            <input type="checkbox" class="checkbox-inline">Caminhão
-            <input type="checkbox" class="checkbox-inline">Caminhão-baú
+            @Html.PasswordFor(m => m.Senha, new { @class = "form-control", @title = "Escolha uma senha com, no mínimo, 6 caracteres." })
         </div>
     </div>
-    <div class="form-group">
-        <h3>Quais tipos de entrega você oferece?</h3>
+    <div class="form-group" hidden id="divConfSenha">
+        @Html.LabelFor(m => m.ConfirmarSenha, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            <input type="checkbox" class="checkbox-inline">Pequenas entregas
-            <input type="checkbox" class="checkbox-inline">Delivery
-            <input type="checkbox" class="checkbox-inline">Mudança
-            <input type="checkbox" class="checkbox-inline">Frete de grande porte
+            @Html.PasswordFor(m => m.ConfirmarSenha, new { @class = "form-control", @title = "Insira novamente a senha informada no campo anterior." })
         </div>
     </div>
-    <div class="form-group">
-        <h3>Quais tipo de produtos você transporta?</h3>
-        <div class="col-md-10">
-            <input type="checkbox" class="checkbox-inline">Encomendas
-            <input type="checkbox" class="checkbox-inline">Móveis
-            <input type="checkbox" class="checkbox-inline">Veículos
-            <input type="checkbox" class="checkbox-inline">Frágil
-            <input type="checkbox" class="checkbox-inline">Inflamáveis
-            <input type="checkbox" class="checkbox-inline">Animais
+        // Campos apenas para prestadores de serviço
+            <hr hidden />
+        <div class="form-group" hidden>
+            <h3>Quais veículos você possui?</h3>
+            <div class="col-md-10">
+                <input type="checkbox" class="checkbox-inline">Moto
+                <input type="checkbox" class="checkbox-inline">Caminhonete
+                <input type="checkbox" class="checkbox-inline">Furgão
+                <input type="checkbox" class="checkbox-inline">Reboque
+                <input type="checkbox" class="checkbox-inline">Caminhão
+                <input type="checkbox" class="checkbox-inline">Caminhão-baú
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <h3>Quais cidades você atende?</h3>
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.UF, new SelectList(new List<Object>{
-                                                                              new { value = "AC", text = "Acre"},
-                                                                              new { value = "AL", text = "Alagoas"},
-                                                                              new { value = "AP", text = "Amapá"},
-                                                                              new { value = "AM", text = "Amazonas"},
-                                                                              new { value = "BA", text = "Bahia"},
-                                                                              new { value = "CE", text = "Ceará"},
-                                                                              new { value = "DF", text = "Distrito Federal"},
-                                                                              new { value = "ES", text = "Espírito Santo"},
-                                                                              new { value = "GO", text = "Goiás"},
-                                                                              new { value = "MA", text = "Maranhão"},
-                                                                              new { value = "MT", text = "Mato Grosso"},
-                                                                              new { value = "MS", text = "Mato Grosso do Sul"},
-                                                                              new { value = "MG", text = "Minas Gerais"},
-                                                                              new { value = "PA", text = "Pará"},
-                                                                              new { value = "PB", text = "Paraíba"},
-                                                                              new { value = "PR", text = "Paraná"},
-                                                                              new { value = "PE", text = "Pernambuco"},
-                                                                              new { value = "PI", text = "Piauí"},
-                                                                              new { value = "RJ", text = "Rio de Janeiro"},
-                                                                              new { value = "RN", text = "Rio Grande do Norte"},
-                                                                              new { value = "RS", text = "Rio Grande do Sul"},
-                                                                              new { value = "RO", text = "Rondônia"},
-                                                                              new { value = "RR", text = "Roraima"},
-                                                                              new { value = "SC", text = "Santa Catarina"},
-                                                                              new { value = "SP", text = "São Paulo"},
-                                                                              new { value = "SE", text = "Sergipe"},
-                                                                              new { value = "TO", text = "Tocantins"}
-                                                                              }, "value", "text", 2), new { @class = "btn btn-default dropdown-toggle", @title = "Nome de seu Estado." })
+        <div class="form-group" hidden>
+            <h3>Quais tipos de entrega você oferece?</h3>
+            <div class="col-md-10">
+                <input type="checkbox" class="checkbox-inline">Pequenas entregas
+                <input type="checkbox" class="checkbox-inline">Delivery
+                <input type="checkbox" class="checkbox-inline">Mudança
+                <input type="checkbox" class="checkbox-inline">Frete de grande porte
+            </div>
+        </div>
+        <div class="form-group" hidden>
+            <h3>Quais tipo de produtos você transporta?</h3>
+            <div class="col-md-10">
+                <input type="checkbox" class="checkbox-inline">Encomendas
+                <input type="checkbox" class="checkbox-inline">Móveis
+                <input type="checkbox" class="checkbox-inline">Veículos
+                <input type="checkbox" class="checkbox-inline">Frágil
+                <input type="checkbox" class="checkbox-inline">Inflamáveis
+                <input type="checkbox" class="checkbox-inline">Animais
+            </div>
+        </div>
+        <div class="form-group" hidden>
+            <h3>Quais cidades você atende?</h3>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UF, new SelectList(new List<Object>{
+                                                                                      new { value = "", text = "Selecione..."},
+                                                                                      new { value = "AC", text = "Acre"},
+                                                                                      new { value = "AL", text = "Alagoas"},
+                                                                                      new { value = "AP", text = "Amapá"},
+                                                                                      new { value = "AM", text = "Amazonas"},
+                                                                                      new { value = "BA", text = "Bahia"},
+                                                                                      new { value = "CE", text = "Ceará"},
+                                                                                      new { value = "DF", text = "Distrito Federal"},
+                                                                                      new { value = "ES", text = "Espírito Santo"},
+                                                                                      new { value = "GO", text = "Goiás"},
+                                                                                      new { value = "MA", text = "Maranhão"},
+                                                                                      new { value = "MT", text = "Mato Grosso"},
+                                                                                      new { value = "MS", text = "Mato Grosso do Sul"},
+                                                                                      new { value = "MG", text = "Minas Gerais"},
+                                                                                      new { value = "PA", text = "Pará"},
+                                                                                      new { value = "PB", text = "Paraíba"},
+                                                                                      new { value = "PR", text = "Paraná"},
+                                                                                      new { value = "PE", text = "Pernambuco"},
+                                                                                      new { value = "PI", text = "Piauí"},
+                                                                                      new { value = "RJ", text = "Rio de Janeiro"},
+                                                                                      new { value = "RN", text = "Rio Grande do Norte"},
+                                                                                      new { value = "RS", text = "Rio Grande do Sul"},
+                                                                                      new { value = "RO", text = "Rondônia"},
+                                                                                      new { value = "RR", text = "Roraima"},
+                                                                                      new { value = "SC", text = "Santa Catarina"},
+                                                                                      new { value = "SP", text = "São Paulo"},
+                                                                                      new { value = "SE", text = "Sergipe"},
+                                                                                      new { value = "TO", text = "Tocantins"}
+                                                                                      }, "value", "text", 2), new { @class = "btn btn-default dropdown-toggle", @title = "Nome de seu Estado." })
+            </div>
         </div>
 
-    </div>
+            // Submit
 
-    // Submit
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Registrar" />
+        <div class="form-group" hidden>
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Registrar" />
+            </div>
         </div>
-    </div>
-}
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    }
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</div>
