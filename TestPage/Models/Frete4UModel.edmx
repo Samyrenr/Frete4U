@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Frete4UModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Contato_Vinculo">
+          <Key>
+            <PropertyRef Name="IDContatoVinculo" />
+          </Key>
+          <Property Name="IDContatoVinculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTipoContato" Type="int" />
+          <Property Name="IDPessoa" Type="int" />
+          <Property Name="Descricao" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Fabricante_Veiculo">
+          <Key>
+            <PropertyRef Name="IDFabricante" />
+          </Key>
+          <Property Name="IDFabricante" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomeFabricante" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Pessoa">
+          <Key>
+            <PropertyRef Name="IDPessoa" />
+          </Key>
+          <Property Name="IDPessoa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTipoPessoa" Type="int" />
+          <Property Name="Nome" Type="varchar" MaxLength="255" />
+          <Property Name="CPF" Type="varchar" MaxLength="11" />
+          <Property Name="CNPJ" Type="varchar" MaxLength="14" />
+          <Property Name="Logradouro" Type="varchar" MaxLength="255" />
+          <Property Name="NumeroEndereco" Type="varchar" MaxLength="255" />
+          <Property Name="Bairro" Type="varchar" MaxLength="255" />
+          <Property Name="Complemento" Type="varchar(max)" />
+          <Property Name="Cidade" Type="varchar(max)" />
+          <Property Name="Estado" Type="varchar(max)" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Pessoa_Veiculo_Vinculo">
+          <Key>
+            <PropertyRef Name="IDVinculo" />
+          </Key>
+          <Property Name="IDVinculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDPessoa" Type="int" Nullable="false" />
+          <Property Name="IDVeiculo" Type="int" Nullable="false" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Solicitacao">
+          <Key>
+            <PropertyRef Name="IDPessoa" />
+            <PropertyRef Name="IDSolicitacao" />
+          </Key>
+          <Property Name="IDPessoa" Type="int" Nullable="false" />
+          <Property Name="IDSolicitacao" Type="int" Nullable="false" />
+          <Property Name="DataHora" Type="datetime" />
+          <Property Name="Finalizado" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tipo_Combustivel">
+          <Key>
+            <PropertyRef Name="IDTipoCombustivel" />
+          </Key>
+          <Property Name="IDTipoCombustivel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="255" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tipo_Contato">
+          <Key>
+            <PropertyRef Name="IDTipoContato" />
+          </Key>
+          <Property Name="IDTipoContato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="255" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tipo_Pessoa">
+          <Key>
+            <PropertyRef Name="IDTipoPessoa" />
+          </Key>
+          <Property Name="IDTipoPessoa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="255" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tipo_Veiculo">
+          <Key>
+            <PropertyRef Name="IDTipoVeiculo" />
+          </Key>
+          <Property Name="IDTipoVeiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="varchar" MaxLength="255" />
+          <Property Name="Inativo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Veiculo">
+          <Key>
+            <PropertyRef Name="IDVeiculo" />
+          </Key>
+          <Property Name="IDVeiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDFabricante" Type="int" Nullable="false" />
+          <Property Name="IDTipoCombustivel" Type="int" />
+          <Property Name="IDTipoVeiculo" Type="int" />
+          <Property Name="Ano" Type="date" />
+        </EntityType>
+        <Association Name="FK_Fabricante_Veiculo">
+          <End Role="Fabricante_Veiculo" Type="Self.Fabricante_Veiculo" Multiplicity="1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fabricante_Veiculo">
+              <PropertyRef Name="IDFabricante" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDFabricante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pessoa_Contato_Vinculo">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="0..1" />
+          <End Role="Contato_Vinculo" Type="Self.Contato_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Contato_Vinculo">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pessoa_Pessoa_Veiculo_Vinculo">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
+          <End Role="Pessoa_Veiculo_Vinculo" Type="Self.Pessoa_Veiculo_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Pessoa_Veiculo_Vinculo">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pessoa_Solicitacao">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
+          <End Role="Solicitacao" Type="Self.Solicitacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Solicitacao">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoCombustivel">
+          <End Role="Tipo_Combustivel" Type="Self.Tipo_Combustivel" Multiplicity="0..1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Combustivel">
+              <PropertyRef Name="IDTipoCombustivel" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDTipoCombustivel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoContato_Contato_Vinculo">
+          <End Role="Tipo_Contato" Type="Self.Tipo_Contato" Multiplicity="0..1" />
+          <End Role="Contato_Vinculo" Type="Self.Contato_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Contato">
+              <PropertyRef Name="IDTipoContato" />
+            </Principal>
+            <Dependent Role="Contato_Vinculo">
+              <PropertyRef Name="IDTipoContato" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoPessoa">
+          <End Role="Tipo_Pessoa" Type="Self.Tipo_Pessoa" Multiplicity="0..1" />
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Pessoa">
+              <PropertyRef Name="IDTipoPessoa" />
+            </Principal>
+            <Dependent Role="Pessoa">
+              <PropertyRef Name="IDTipoPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoVeiculo">
+          <End Role="Tipo_Veiculo" Type="Self.Tipo_Veiculo" Multiplicity="0..1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Veiculo">
+              <PropertyRef Name="IDTipoVeiculo" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDTipoVeiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Veiculo_Transportador_Veiculo_Vinculo">
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="1" />
+          <End Role="Pessoa_Veiculo_Vinculo" Type="Self.Pessoa_Veiculo_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Veiculo">
+              <PropertyRef Name="IDVeiculo" />
+            </Principal>
+            <Dependent Role="Pessoa_Veiculo_Vinculo">
+              <PropertyRef Name="IDVeiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Frete4UModelStoreContainer">
+          <EntitySet Name="Contato_Vinculo" EntityType="Self.Contato_Vinculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fabricante_Veiculo" EntityType="Self.Fabricante_Veiculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pessoa" EntityType="Self.Pessoa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pessoa_Veiculo_Vinculo" EntityType="Self.Pessoa_Veiculo_Vinculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Solicitacao" EntityType="Self.Solicitacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Combustivel" EntityType="Self.Tipo_Combustivel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Contato" EntityType="Self.Tipo_Contato" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Pessoa" EntityType="Self.Tipo_Pessoa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Veiculo" EntityType="Self.Tipo_Veiculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Veiculo" EntityType="Self.Veiculo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Fabricante_Veiculo" Association="Self.FK_Fabricante_Veiculo">
+            <End Role="Fabricante_Veiculo" EntitySet="Fabricante_Veiculo" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pessoa_Contato_Vinculo" Association="Self.FK_Pessoa_Contato_Vinculo">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Contato_Vinculo" EntitySet="Contato_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pessoa_Pessoa_Veiculo_Vinculo" Association="Self.FK_Pessoa_Pessoa_Veiculo_Vinculo">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Pessoa_Veiculo_Vinculo" EntitySet="Pessoa_Veiculo_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pessoa_Solicitacao" Association="Self.FK_Pessoa_Solicitacao">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Solicitacao" EntitySet="Solicitacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoCombustivel" Association="Self.FK_TipoCombustivel">
+            <End Role="Tipo_Combustivel" EntitySet="Tipo_Combustivel" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoContato_Contato_Vinculo" Association="Self.FK_TipoContato_Contato_Vinculo">
+            <End Role="Tipo_Contato" EntitySet="Tipo_Contato" />
+            <End Role="Contato_Vinculo" EntitySet="Contato_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoPessoa" Association="Self.FK_TipoPessoa">
+            <End Role="Tipo_Pessoa" EntitySet="Tipo_Pessoa" />
+            <End Role="Pessoa" EntitySet="Pessoa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoVeiculo" Association="Self.FK_TipoVeiculo">
+            <End Role="Tipo_Veiculo" EntitySet="Tipo_Veiculo" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Veiculo_Transportador_Veiculo_Vinculo" Association="Self.FK_Veiculo_Transportador_Veiculo_Vinculo">
+            <End Role="Veiculo" EntitySet="Veiculo" />
+            <End Role="Pessoa_Veiculo_Vinculo" EntitySet="Pessoa_Veiculo_Vinculo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Frete4UModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Contato_Vinculo">
+          <Key>
+            <PropertyRef Name="IDContatoVinculo" />
+          </Key>
+          <Property Name="IDContatoVinculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTipoContato" Type="Int32" />
+          <Property Name="IDPessoa" Type="Int32" />
+          <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pessoa" Relationship="Self.FK_Pessoa_Contato_Vinculo" FromRole="Contato_Vinculo" ToRole="Pessoa" />
+          <NavigationProperty Name="Tipo_Contato" Relationship="Self.FK_TipoContato_Contato_Vinculo" FromRole="Contato_Vinculo" ToRole="Tipo_Contato" />
+        </EntityType>
+        <EntityType Name="Fabricante_Veiculo">
+          <Key>
+            <PropertyRef Name="IDFabricante" />
+          </Key>
+          <Property Name="IDFabricante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomeFabricante" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Veiculo" Relationship="Self.FK_Fabricante_Veiculo" FromRole="Fabricante_Veiculo" ToRole="Veiculo" />
+        </EntityType>
+        <EntityType Name="Pessoa">
+          <Key>
+            <PropertyRef Name="IDPessoa" />
+          </Key>
+          <Property Name="IDPessoa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTipoPessoa" Type="Int32" />
+          <Property Name="Nome" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CPF" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="CNPJ" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="Logradouro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroEndereco" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Bairro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Complemento" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cidade" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Contato_Vinculo" Relationship="Self.FK_Pessoa_Contato_Vinculo" FromRole="Pessoa" ToRole="Contato_Vinculo" />
+          <NavigationProperty Name="Pessoa_Veiculo_Vinculo" Relationship="Self.FK_Pessoa_Pessoa_Veiculo_Vinculo" FromRole="Pessoa" ToRole="Pessoa_Veiculo_Vinculo" />
+          <NavigationProperty Name="Solicitacao" Relationship="Self.FK_Pessoa_Solicitacao" FromRole="Pessoa" ToRole="Solicitacao" />
+          <NavigationProperty Name="Tipo_Pessoa" Relationship="Self.FK_TipoPessoa" FromRole="Pessoa" ToRole="Tipo_Pessoa" />
+        </EntityType>
+        <EntityType Name="Pessoa_Veiculo_Vinculo">
+          <Key>
+            <PropertyRef Name="IDVinculo" />
+          </Key>
+          <Property Name="IDVinculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDPessoa" Type="Int32" Nullable="false" />
+          <Property Name="IDVeiculo" Type="Int32" Nullable="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Pessoa" Relationship="Self.FK_Pessoa_Pessoa_Veiculo_Vinculo" FromRole="Pessoa_Veiculo_Vinculo" ToRole="Pessoa" />
+          <NavigationProperty Name="Veiculo" Relationship="Self.FK_Veiculo_Transportador_Veiculo_Vinculo" FromRole="Pessoa_Veiculo_Vinculo" ToRole="Veiculo" />
+        </EntityType>
+        <EntityType Name="Solicitacao">
+          <Key>
+            <PropertyRef Name="IDPessoa" />
+            <PropertyRef Name="IDSolicitacao" />
+          </Key>
+          <Property Name="IDPessoa" Type="Int32" Nullable="false" />
+          <Property Name="IDSolicitacao" Type="Int32" Nullable="false" />
+          <Property Name="DataHora" Type="DateTime" Precision="3" />
+          <Property Name="Finalizado" Type="Boolean" />
+          <NavigationProperty Name="Pessoa" Relationship="Self.FK_Pessoa_Solicitacao" FromRole="Solicitacao" ToRole="Pessoa" />
+        </EntityType>
+        <EntityType Name="Tipo_Combustivel">
+          <Key>
+            <PropertyRef Name="IDTipoCombustivel" />
+          </Key>
+          <Property Name="IDTipoCombustivel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Veiculo" Relationship="Self.FK_TipoCombustivel" FromRole="Tipo_Combustivel" ToRole="Veiculo" />
+        </EntityType>
+        <EntityType Name="Tipo_Contato">
+          <Key>
+            <PropertyRef Name="IDTipoContato" />
+          </Key>
+          <Property Name="IDTipoContato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Contato_Vinculo" Relationship="Self.FK_TipoContato_Contato_Vinculo" FromRole="Tipo_Contato" ToRole="Contato_Vinculo" />
+        </EntityType>
+        <EntityType Name="Tipo_Pessoa">
+          <Key>
+            <PropertyRef Name="IDTipoPessoa" />
+          </Key>
+          <Property Name="IDTipoPessoa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Pessoa" Relationship="Self.FK_TipoPessoa" FromRole="Tipo_Pessoa" ToRole="Pessoa" />
+        </EntityType>
+        <EntityType Name="Tipo_Veiculo">
+          <Key>
+            <PropertyRef Name="IDTipoVeiculo" />
+          </Key>
+          <Property Name="IDTipoVeiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Inativo" Type="Boolean" />
+          <NavigationProperty Name="Veiculo" Relationship="Self.FK_TipoVeiculo" FromRole="Tipo_Veiculo" ToRole="Veiculo" />
+        </EntityType>
+        <EntityType Name="Veiculo">
+          <Key>
+            <PropertyRef Name="IDVeiculo" />
+          </Key>
+          <Property Name="IDVeiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDFabricante" Type="Int32" Nullable="false" />
+          <Property Name="IDTipoCombustivel" Type="Int32" />
+          <Property Name="IDTipoVeiculo" Type="Int32" />
+          <Property Name="Ano" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Fabricante_Veiculo" Relationship="Self.FK_Fabricante_Veiculo" FromRole="Veiculo" ToRole="Fabricante_Veiculo" />
+          <NavigationProperty Name="Pessoa_Veiculo_Vinculo" Relationship="Self.FK_Veiculo_Transportador_Veiculo_Vinculo" FromRole="Veiculo" ToRole="Pessoa_Veiculo_Vinculo" />
+          <NavigationProperty Name="Tipo_Combustivel" Relationship="Self.FK_TipoCombustivel" FromRole="Veiculo" ToRole="Tipo_Combustivel" />
+          <NavigationProperty Name="Tipo_Veiculo" Relationship="Self.FK_TipoVeiculo" FromRole="Veiculo" ToRole="Tipo_Veiculo" />
+        </EntityType>
+        <Association Name="FK_Pessoa_Contato_Vinculo">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="0..1" />
+          <End Role="Contato_Vinculo" Type="Self.Contato_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Contato_Vinculo">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoContato_Contato_Vinculo">
+          <End Role="Tipo_Contato" Type="Self.Tipo_Contato" Multiplicity="0..1" />
+          <End Role="Contato_Vinculo" Type="Self.Contato_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Contato">
+              <PropertyRef Name="IDTipoContato" />
+            </Principal>
+            <Dependent Role="Contato_Vinculo">
+              <PropertyRef Name="IDTipoContato" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fabricante_Veiculo">
+          <End Role="Fabricante_Veiculo" Type="Self.Fabricante_Veiculo" Multiplicity="1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fabricante_Veiculo">
+              <PropertyRef Name="IDFabricante" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDFabricante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pessoa_Pessoa_Veiculo_Vinculo">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
+          <End Role="Pessoa_Veiculo_Vinculo" Type="Self.Pessoa_Veiculo_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Pessoa_Veiculo_Vinculo">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pessoa_Solicitacao">
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
+          <End Role="Solicitacao" Type="Self.Solicitacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="IDPessoa" />
+            </Principal>
+            <Dependent Role="Solicitacao">
+              <PropertyRef Name="IDPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoPessoa">
+          <End Role="Tipo_Pessoa" Type="Self.Tipo_Pessoa" Multiplicity="0..1" />
+          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Pessoa">
+              <PropertyRef Name="IDTipoPessoa" />
+            </Principal>
+            <Dependent Role="Pessoa">
+              <PropertyRef Name="IDTipoPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Veiculo_Transportador_Veiculo_Vinculo">
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="1" />
+          <End Role="Pessoa_Veiculo_Vinculo" Type="Self.Pessoa_Veiculo_Vinculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Veiculo">
+              <PropertyRef Name="IDVeiculo" />
+            </Principal>
+            <Dependent Role="Pessoa_Veiculo_Vinculo">
+              <PropertyRef Name="IDVeiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoCombustivel">
+          <End Role="Tipo_Combustivel" Type="Self.Tipo_Combustivel" Multiplicity="0..1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Combustivel">
+              <PropertyRef Name="IDTipoCombustivel" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDTipoCombustivel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoVeiculo">
+          <End Role="Tipo_Veiculo" Type="Self.Tipo_Veiculo" Multiplicity="0..1" />
+          <End Role="Veiculo" Type="Self.Veiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Veiculo">
+              <PropertyRef Name="IDTipoVeiculo" />
+            </Principal>
+            <Dependent Role="Veiculo">
+              <PropertyRef Name="IDTipoVeiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Frete4UEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Contato_Vinculo" EntityType="Self.Contato_Vinculo" />
+          <EntitySet Name="Fabricante_Veiculo" EntityType="Self.Fabricante_Veiculo" />
+          <EntitySet Name="Pessoa" EntityType="Self.Pessoa" />
+          <EntitySet Name="Pessoa_Veiculo_Vinculo" EntityType="Self.Pessoa_Veiculo_Vinculo" />
+          <EntitySet Name="Solicitacao" EntityType="Self.Solicitacao" />
+          <EntitySet Name="Tipo_Combustivel" EntityType="Self.Tipo_Combustivel" />
+          <EntitySet Name="Tipo_Contato" EntityType="Self.Tipo_Contato" />
+          <EntitySet Name="Tipo_Pessoa" EntityType="Self.Tipo_Pessoa" />
+          <EntitySet Name="Tipo_Veiculo" EntityType="Self.Tipo_Veiculo" />
+          <EntitySet Name="Veiculo" EntityType="Self.Veiculo" />
+          <AssociationSet Name="FK_Pessoa_Contato_Vinculo" Association="Self.FK_Pessoa_Contato_Vinculo">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Contato_Vinculo" EntitySet="Contato_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoContato_Contato_Vinculo" Association="Self.FK_TipoContato_Contato_Vinculo">
+            <End Role="Tipo_Contato" EntitySet="Tipo_Contato" />
+            <End Role="Contato_Vinculo" EntitySet="Contato_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fabricante_Veiculo" Association="Self.FK_Fabricante_Veiculo">
+            <End Role="Fabricante_Veiculo" EntitySet="Fabricante_Veiculo" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pessoa_Pessoa_Veiculo_Vinculo" Association="Self.FK_Pessoa_Pessoa_Veiculo_Vinculo">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Pessoa_Veiculo_Vinculo" EntitySet="Pessoa_Veiculo_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pessoa_Solicitacao" Association="Self.FK_Pessoa_Solicitacao">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Solicitacao" EntitySet="Solicitacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoPessoa" Association="Self.FK_TipoPessoa">
+            <End Role="Tipo_Pessoa" EntitySet="Tipo_Pessoa" />
+            <End Role="Pessoa" EntitySet="Pessoa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Veiculo_Transportador_Veiculo_Vinculo" Association="Self.FK_Veiculo_Transportador_Veiculo_Vinculo">
+            <End Role="Veiculo" EntitySet="Veiculo" />
+            <End Role="Pessoa_Veiculo_Vinculo" EntitySet="Pessoa_Veiculo_Vinculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoCombustivel" Association="Self.FK_TipoCombustivel">
+            <End Role="Tipo_Combustivel" EntitySet="Tipo_Combustivel" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoVeiculo" Association="Self.FK_TipoVeiculo">
+            <End Role="Tipo_Veiculo" EntitySet="Tipo_Veiculo" />
+            <End Role="Veiculo" EntitySet="Veiculo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Frete4UModelStoreContainer" CdmEntityContainer="Frete4UEntities">
+          <EntitySetMapping Name="Contato_Vinculo">
+            <EntityTypeMapping TypeName="Frete4UModel.Contato_Vinculo">
+              <MappingFragment StoreEntitySet="Contato_Vinculo">
+                <ScalarProperty Name="IDContatoVinculo" ColumnName="IDContatoVinculo" />
+                <ScalarProperty Name="IDTipoContato" ColumnName="IDTipoContato" />
+                <ScalarProperty Name="IDPessoa" ColumnName="IDPessoa" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fabricante_Veiculo">
+            <EntityTypeMapping TypeName="Frete4UModel.Fabricante_Veiculo">
+              <MappingFragment StoreEntitySet="Fabricante_Veiculo">
+                <ScalarProperty Name="IDFabricante" ColumnName="IDFabricante" />
+                <ScalarProperty Name="NomeFabricante" ColumnName="NomeFabricante" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pessoa">
+            <EntityTypeMapping TypeName="Frete4UModel.Pessoa">
+              <MappingFragment StoreEntitySet="Pessoa">
+                <ScalarProperty Name="IDPessoa" ColumnName="IDPessoa" />
+                <ScalarProperty Name="IDTipoPessoa" ColumnName="IDTipoPessoa" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="CNPJ" ColumnName="CNPJ" />
+                <ScalarProperty Name="Logradouro" ColumnName="Logradouro" />
+                <ScalarProperty Name="NumeroEndereco" ColumnName="NumeroEndereco" />
+                <ScalarProperty Name="Bairro" ColumnName="Bairro" />
+                <ScalarProperty Name="Complemento" ColumnName="Complemento" />
+                <ScalarProperty Name="Cidade" ColumnName="Cidade" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pessoa_Veiculo_Vinculo">
+            <EntityTypeMapping TypeName="Frete4UModel.Pessoa_Veiculo_Vinculo">
+              <MappingFragment StoreEntitySet="Pessoa_Veiculo_Vinculo">
+                <ScalarProperty Name="IDVinculo" ColumnName="IDVinculo" />
+                <ScalarProperty Name="IDPessoa" ColumnName="IDPessoa" />
+                <ScalarProperty Name="IDVeiculo" ColumnName="IDVeiculo" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Solicitacao">
+            <EntityTypeMapping TypeName="Frete4UModel.Solicitacao">
+              <MappingFragment StoreEntitySet="Solicitacao">
+                <ScalarProperty Name="IDPessoa" ColumnName="IDPessoa" />
+                <ScalarProperty Name="IDSolicitacao" ColumnName="IDSolicitacao" />
+                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
+                <ScalarProperty Name="Finalizado" ColumnName="Finalizado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Combustivel">
+            <EntityTypeMapping TypeName="Frete4UModel.Tipo_Combustivel">
+              <MappingFragment StoreEntitySet="Tipo_Combustivel">
+                <ScalarProperty Name="IDTipoCombustivel" ColumnName="IDTipoCombustivel" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Contato">
+            <EntityTypeMapping TypeName="Frete4UModel.Tipo_Contato">
+              <MappingFragment StoreEntitySet="Tipo_Contato">
+                <ScalarProperty Name="IDTipoContato" ColumnName="IDTipoContato" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Pessoa">
+            <EntityTypeMapping TypeName="Frete4UModel.Tipo_Pessoa">
+              <MappingFragment StoreEntitySet="Tipo_Pessoa">
+                <ScalarProperty Name="IDTipoPessoa" ColumnName="IDTipoPessoa" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Veiculo">
+            <EntityTypeMapping TypeName="Frete4UModel.Tipo_Veiculo">
+              <MappingFragment StoreEntitySet="Tipo_Veiculo">
+                <ScalarProperty Name="IDTipoVeiculo" ColumnName="IDTipoVeiculo" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Inativo" ColumnName="Inativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Veiculo">
+            <EntityTypeMapping TypeName="Frete4UModel.Veiculo">
+              <MappingFragment StoreEntitySet="Veiculo">
+                <ScalarProperty Name="IDVeiculo" ColumnName="IDVeiculo" />
+                <ScalarProperty Name="IDFabricante" ColumnName="IDFabricante" />
+                <ScalarProperty Name="IDTipoCombustivel" ColumnName="IDTipoCombustivel" />
+                <ScalarProperty Name="IDTipoVeiculo" ColumnName="IDTipoVeiculo" />
+                <ScalarProperty Name="Ano" ColumnName="Ano" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
